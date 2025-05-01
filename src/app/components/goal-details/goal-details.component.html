@@ -1,0 +1,204 @@
+<div class="goal-details-container">
+  <mat-toolbar color="primary" class="toolbar">
+    <button mat-icon-button (click)="navigateToDashboard()" aria-label="Back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="app-name">Goal Tracker</span>
+    <span class="spacer"></span>
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+      <span>{{ authService.currentUserValue?.username }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="navigateToDashboard()">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="authService.logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && errorMessage" class="error-container">
+      <p>{{ errorMessage }}</p>
+      <button mat-stroked-button color="primary" (click)="navigateToDashboard()">Back to Dashboard</button>
+    </div>
+
+    <ng-container *ngIf="!loading && !errorMessage && goal">
+      <div class="goal-header">
+        <div class="goal-title-section">
+          <h1 class="goal-title">{{ goal.title }}</h1>
+          <div class="goal-status" [ngClass]="{'completed': goal.status === 'COMPLETED'}">
+            {{ goal.status }}
+          </div>
+        </div>
+        <div class="goal-actions">
+          <button mat-icon-button (click)="openEditGoalForm()" aria-label="Edit goal">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteGoal()" aria-label="Delete goal">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="goal-details">
+        <p class="goal-description">{{ goal.description }}</p>
+        <div class="goal-metadata">
+          <div *ngIf="goal.dueDate" class="metadata-item">
+            <mat-icon>event</mat-icon>
+            <span>Due Date: {{ goal.dueDate | date }}</span>
+          </div>
+          <div class="metadata-item">
+            <mat-icon>assignment</mat-icon>
+            <span>Tasks: {{ tasks.length }}</span>
+          </div>
+          <div class="metadata-item">
+            <mat-icon>check_circle</mat-icon>
+            <span>Completed: {{ getCompletedTasks().length }} / {{ tasks.length }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider></mat-divider>
+
+      <div class="tasks-section">
+        <div class="section-header">
+          <h2>Tasks</h2>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="toggleAddTask()"
+            *ngIf="!isAddingTask">
+            <mat-icon>add</mat-icon>
+            Add Task
+          </button>
+        </div>
+
+        <div *ngIf="isAddingTask" class="add-task-form">
+          <h3>Add New Task</h3>
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput [(ngModel)]="newTask.title" placeholder="Task title" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea
+              matInput
+              [(ngModel)]="newTask.description"
+              placeholder="Task description"
+              rows="3"
+              required>
+            </textarea>
+          </mat-form-field>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Priority</mat-label>
+              <mat-select [(ngModel)]="newTask.priority">
+                <mat-option [value]="TaskPriority.LOW">Low</mat-option>
+                <mat-option [value]="TaskPriority.MEDIUM">Medium</mat-option>
+                <mat-option [value]="TaskPriority.HIGH">High</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Due Date</mat-label>
+              <input matInput [matDatepicker]="picker" [(ngModel)]="newTask.dueDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <button mat-button (click)="toggleAddTask()">Cancel</button>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="addTask()"
+              [disabled]="!newTask.title || !newTask.description">
+              Add Task
+            </button>
+          </div>
+        </div>
+
+        <div *ngIf="tasks.length === 0 && !isAddingTask" class="empty-tasks">
+          <mat-icon class="empty-icon">assignment</mat-icon>
+          <p>No tasks yet. Add tasks to achieve your goal.</p>
+          <button mat-raised-button color="primary" (click)="toggleAddTask()">Add Your First Task</button>
+        </div>
+
+        <div *ngIf="tasks.length > 0" class="tasks-list">
+          <h3 *ngIf="getPendingTasks().length > 0">Pending Tasks</h3>
+          <mat-card *ngFor="let task of getPendingTasks()" class="task-card" [ngClass]="'priority-' + task.priority.toLowerCase()">
+            <div class="task-card-content">
+              <div class="task-status">
+                <button mat-icon-button (click)="toggleTaskStatus(task); $event.stopPropagation()">
+                  <mat-icon>{{ task.status === TaskStatus.DONE ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+                </button>
+              </div>
+              <div class="task-details">
+                <h3 class="task-title">{{ task.title }}</h3>
+                <p class="task-description">{{ task.description }}</p>
+                <div class="task-metadata">
+                  <div class="task-priority">
+                    <mat-icon>flag</mat-icon>
+                    <span>{{ task.priority }}</span>
+                  </div>
+                  <div *ngIf="task.dueDate" class="task-due-date">
+                    <mat-icon>event</mat-icon>
+                    <span>{{ task.dueDate | date }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <button mat-icon-button (click)="deleteTask(task.id); $event.stopPropagation()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card>
+
+          <h3 *ngIf="getCompletedTasks().length > 0" class="completed-tasks-header">Completed Tasks</h3>
+          <mat-card *ngFor="let task of getCompletedTasks()" class="task-card completed-task">
+            <div class="task-card-content">
+              <div class="task-status">
+                <button mat-icon-button (click)="toggleTaskStatus(task); $event.stopPropagation()">
+                  <mat-icon>check_circle</mat-icon>
+                </button>
+              </div>
+              <div class="task-details">
+                <h3 class="task-title">{{ task.title }}</h3>
+                <p class="task-description">{{ task.description }}</p>
+                <div class="task-metadata">
+                  <div class="task-priority">
+                    <mat-icon>flag</mat-icon>
+                    <span>{{ task.priority }}</span>
+                  </div>
+                  <div *ngIf="task.dueDate" class="task-due-date">
+                    <mat-icon>event</mat-icon>
+                    <span>{{ task.dueDate | date }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="task-actions">
+                <button mat-icon-button (click)="deleteTask(task.id); $event.stopPropagation()">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

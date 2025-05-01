@@ -1,0 +1,64 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #8e24aa, #3f51b5);
+}
+
+.login-card {
+  width: 400px;
+  max-width: 90%;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-header {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+mat-card-title {
+  margin-top: 10px;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+
+mat-card-subtitle {
+  margin-top: 5px;
+  color: #666;
+}
+
+.form-container {
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.name-fields {
+  display: flex;
+  gap: 10px;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.submit-button {
+  margin-top: 10px;
+  height: 40px;
+  font-size: 16px;
+}
+
+mat-spinner {
+  margin: 0 auto;
+}

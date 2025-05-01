@@ -1,0 +1,28 @@
+<mat-card class="task-card" [ngClass]="[getPriorityClass(), isCompleted() ? 'completed-task' : '']">
+  <div class="task-card-content">
+    <div class="task-status">
+      <button mat-icon-button (click)="toggleStatus(); $event.stopPropagation()">
+        <mat-icon>{{ isCompleted() ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+      </button>
+    </div>
+    <div class="task-details">
+      <h3 class="task-title">{{ task.title }}</h3>
+      <p class="task-description">{{ task.description }}</p>
+      <div class="task-metadata">
+        <div class="task-priority">
+          <mat-icon>flag</mat-icon>
+          <span>{{ task.priority }}</span>
+        </div>
+        <div *ngIf="task.dueDate" class="task-due-date">
+          <mat-icon>event</mat-icon>
+          <span>{{ task.dueDate | date }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="task-actions">
+      <button mat-icon-button (click)="deleteTask(); $event.stopPropagation()">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-card>

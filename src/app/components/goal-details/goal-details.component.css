@@ -1,0 +1,298 @@
+.goal-details-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.app-name {
+  margin-left: 8px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-button {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  padding: 24px;
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.loading-container, .error-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+}
+
+.error-container p {
+  color: #f44336;
+  margin-bottom: 16px;
+}
+
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.goal-title-section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.goal-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #333;
+}
+
+.goal-status {
+  padding: 4px 12px;
+  border-radius: 16px;
+  background-color: #f0f0f0;
+  color: #666;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.goal-status.completed {
+  background-color: #e8f5e9;
+  color: #388e3c;
+}
+
+.goal-details {
+  margin-bottom: 24px;
+}
+
+.goal-description {
+  margin: 0 0 16px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.goal-metadata {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.metadata-item {
+  display: flex;
+  align-items: center;
+  color: #666;
+  font-size: 14px;
+}
+
+.metadata-item mat-icon {
+  margin-right: 4px;
+  font-size: 18px;
+  height: 18px;
+  width: 18px;
+}
+
+.tasks-section {
+  margin-top: 24px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-header h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+}
+
+.add-task-form {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.add-task-form h3 {
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.half-width {
+  width: 50%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.empty-tasks {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.empty-icon {
+  font-size: 48px;
+  height: 48px;
+  width: 48px;
+  color: #bbbbbb;
+  margin-bottom: 16px;
+}
+
+.empty-tasks p {
+  margin: 0 0 16px;
+  color: #666;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tasks-list h3 {
+  margin: 16px 0 8px;
+  color: #333;
+  font-weight: 500;
+}
+
+.task-card {
+  border-left: 4px solid #bbbbbb;
+  margin-bottom: 8px;
+  padding: 0;
+}
+
+.task-card.priority-high {
+  border-left-color: #f44336;
+}
+
+.task-card.priority-medium {
+  border-left-color: #ff9800;
+}
+
+.task-card.priority-low {
+  border-left-color: #4caf50;
+}
+
+.task-card.completed-task {
+  border-left-color: #4caf50;
+  background-color: #f9f9f9;
+}
+
+.task-card-content {
+  display: flex;
+  padding: 16px;
+}
+
+.task-status {
+  margin-right: 8px;
+}
+
+.task-details {
+  flex: 1;
+}
+
+.task-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.completed-task .task-title {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.task-description {
+  margin: 0 0 8px;
+  color: #666;
+  font-size: 14px;
+}
+
+.task-metadata {
+  display: flex;
+  gap: 16px;
+  color: #888;
+  font-size: 12px;
+}
+
+.task-priority, .task-due-date {
+  display: flex;
+  align-items: center;
+}
+
+.task-metadata mat-icon {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+  margin-right: 4px;
+}
+
+.completed-tasks-header {
+  margin-top: 24px;
+  color: #4caf50;
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 16px;
+  }
+
+  .goal-header {
+    flex-direction: column;
+  }
+
+  .goal-actions {
+    margin-top: 8px;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .half-width {
+    width: 100%;
+  }
+}

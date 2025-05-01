@@ -1,0 +1,72 @@
+<div class="dashboard-container">
+  <mat-toolbar color="primary" class="toolbar">
+    <span class="app-name">Goal Tracker</span>
+    <span class="spacer"></span>
+    <button mat-raised-button color="accent" (click)="openGoalForm()">
+      <mat-icon>add</mat-icon>
+      Add Goal
+    </button>
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-button">
+      <span>{{ authService.currentUserValue?.username }}</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="authService.logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </mat-toolbar>
+
+  <div class="content">
+    <div class="header-section">
+      <h1 class="page-title">My Goals</h1>
+    </div>
+
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner></mat-spinner>
+    </div>
+
+    <div *ngIf="!loading && errorMessage" class="error-container">
+      <p>{{ errorMessage }}</p>
+      <button mat-stroked-button color="primary" (click)="loadGoals()">Retry</button>
+    </div>
+
+    <div *ngIf="!loading && !errorMessage && goals.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">flag</mat-icon>
+      <p>No goals yet. Create your first goal to get started!</p>
+      <button mat-raised-button color="primary" (click)="openGoalForm()">Add Your First Goal</button>
+    </div>
+
+    <div *ngIf="!loading && !errorMessage && goals.length > 0" class="goals-grid">
+      <mat-card *ngFor="let goal of goals" class="goal-card" [ngClass]="{'completed': goal.status === 'COMPLETED'}">
+        <mat-card-header>
+          <mat-card-title>{{ goal.title }}</mat-card-title>
+          <mat-card-subtitle>{{ goal.status }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ goal.description }}</p>
+          <div class="goal-metadata">
+            <div *ngIf="goal.dueDate" class="metadata-item">
+              <mat-icon>event</mat-icon>
+              <span>{{ goal.dueDate | date }}</span>
+            </div>
+            <div class="metadata-item">
+              <mat-icon>assignment</mat-icon>
+              <span>{{ goal.taskCount || 0 }} tasks</span>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="viewGoalDetails(goal.id)">View Details</button>
+          <button mat-icon-button (click)="openGoalForm(goal)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="deleteGoal(goal.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

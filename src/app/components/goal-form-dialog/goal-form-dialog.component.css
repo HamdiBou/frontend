@@ -1,0 +1,24 @@
+.full-width {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+mat-dialog-content {
+  min-width: 400px;
+  max-width: 100%;
+}
+
+h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+textarea {
+  resize: none;
+}
+
+@media (max-width: 480px) {
+  mat-dialog-content {
+    min-width: auto;
+  }
+}
