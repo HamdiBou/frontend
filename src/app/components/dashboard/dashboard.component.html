@@ -23,6 +23,48 @@
       <h1 class="page-title">My Goals</h1>
     </div>
 
+    <!-- Add Calendar Section -->
+    <div class="calendar-section">
+      <div class="calendar-header">
+        <h2 class="calendar-title">Goal Calendar</h2>
+        <div class="calendar-controls">
+          <button mat-icon-button (click)="previousMonth()">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <span class="current-month">{{ currentDate | date:'MMMM yyyy' }}</span>
+          <button mat-icon-button (click)="nextMonth()">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="calendar-grid">
+        <!-- Week days header -->
+        <div class="calendar-day-header" *ngFor="let day of weekDays">
+          {{ day }}
+        </div>
+
+        <!-- Calendar days -->
+        <div
+          *ngFor="let day of calendarDays"
+          class="calendar-day"
+          [ngClass]="{
+            'today': isToday(day.date),
+            'has-goal': day.goals.length > 0,
+            'other-month': !isSameMonth(day.date)
+          }">
+          <span class="calendar-day-number">{{ day.date | date:'d' }}</span>
+          <div class="goal-indicator" *ngIf="day.goals.length > 0">
+            <span
+              class="goal-dot"
+              *ngFor="let goal of day.goals"
+              [matTooltip]="goal.title">
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div *ngIf="loading" class="loading-container">
       <mat-spinner></mat-spinner>
     </div>

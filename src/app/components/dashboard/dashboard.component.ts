@@ -16,6 +16,12 @@ export class DashboardComponent implements OnInit {
   goals: Goal[] = [];
   loading = true;
   errorMessage = '';
+  currentDate = new Date();
+  weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  calendarDays: Array<{
+    date: Date;
+    goals: any[];
+  }> = [];
 
   constructor(
     private goalService: GoalService,
@@ -32,6 +38,7 @@ export class DashboardComponent implements OnInit {
     }
 
     this.loadGoals();
+    this.generateCalendarDays();
   }
 
   loadGoals(): void {
@@ -40,6 +47,7 @@ export class DashboardComponent implements OnInit {
       next: (goals: Goal[]) => {
         this.goals = goals;
         this.loading = false;
+        this.generateCalendarDays();
       },
       error: (error: any) => {
         console.error('Error loading goals:', error);
@@ -56,6 +64,7 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: Goal) => {
+      console.log('Dialog result:', result);
       if (result) {
         if (goal) {
           this.goalService.updateGoal(goal.id, result).subscribe({
@@ -124,5 +133,45 @@ export class DashboardComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  generateCalendarDays() {
+    const firstDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), 1);
+    const lastDay = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1, 0);
+
+    // Generate array of dates and match with goals
+    this.calendarDays = [];
+    for (let d = new Date(firstDay); d <= lastDay; d.setDate(d.getDate() + 1)) {
+      this.calendarDays.push({
+        date: new Date(d),
+        goals: this.goals.filter(goal => {
+          const goalDate = new Date(goal.dueDate || new Date());
+          return goalDate.getDate() === d.getDate() &&
+                 goalDate.getMonth() === d.getMonth() &&
+                 goalDate.getFullYear() === d.getFullYear();
+        })
+      });
+    }
+  }
+
+  previousMonth() {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
+    this.generateCalendarDays();
+  }
+
+  nextMonth() {
+    this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
+    this.generateCalendarDays();
+  }
+
+  isToday(date: Date): boolean {
+    const today = new Date();
+    return date.getDate() === today.getDate() &&
+           date.getMonth() === today.getMonth() &&
+           date.getFullYear() === today.getFullYear();
+  }
+
+  isSameMonth(date: Date): boolean {
+    return date.getMonth() === this.currentDate.getMonth();
   }
 }

@@ -18,7 +18,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DashboardComponent } from './dashboard.component';
 import { GoalFormDialogComponent } from '../goal-form-dialog/goal-form-dialog.component';
 
@@ -48,7 +48,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTooltipModule
   ]
 })
 export class DashboardModule { }

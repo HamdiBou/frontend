@@ -211,6 +211,103 @@ mat-card-subtitle {
   color: #9CA3AF;
 }
 
+/* Calendar Section */
+.calendar-section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  max-width: 400px; /* Added max-width */
+  margin-left: auto; /* Center the calendar if space available */
+  margin-right: auto;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px; /* Reduced margin */
+}
+
+.calendar-title {
+  font-size: 16px; /* Smaller font */
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: 4px; /* Reduced gap */
+}
+
+.current-month {
+  font-size: 13px; /* Smaller font */
+  min-width: 80px; /* Reduced width */
+  text-align: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px; /* Reduced gap */
+}
+
+.calendar-day {
+  aspect-ratio: 1;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px; /* Smaller radius */
+  padding: 2px; /* Reduced padding */
+  position: relative;
+  cursor: pointer;
+  min-width: 28px; /* Added min-width */
+  min-height: 28px; /* Added min-height */
+}
+
+.calendar-day:hover {
+  background-color: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.calendar-day.today {
+  background-color: #ebf8ff;
+  border-color: #90cdf4;
+}
+
+.calendar-day.has-goal {
+  border-color: #6b46c1;
+}
+
+.calendar-day.other-month {
+  background-color: #f8f9fa;
+  color: #a0aec0;
+}
+
+.calendar-day-number {
+  font-size: 14px;
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.goal-indicator {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  right: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.goal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #6b46c1;
+  opacity: 0.8;
+}
+
 @media (max-width: 768px) {
   .content {
     padding: 16px;
@@ -229,5 +326,32 @@ mat-card-subtitle {
 
   .goals-grid {
     grid-template-columns: 1fr;
+  }
+
+  .calendar-section {
+    max-width: 100%; /* Full width on mobile */
+    padding: 12px;
+  }
+
+  .calendar-grid {
+    gap: 4px;
+  }
+
+  .calendar-day {
+    padding: 4px;
+  }
+
+  .calendar-day-header {
+    font-size: 12px;
+    padding: 4px;
+  }
+
+  .calendar-day-number {
+    font-size: 12px;
+  }
+
+  .goal-dot {
+    width: 4px;
+    height: 4px;
   }
 }
